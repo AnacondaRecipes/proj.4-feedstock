@@ -10,22 +10,17 @@ source:
 
 build:
   number: 0
-  skip: True  # [win and py36]
-  features:
-    - vc9  # [win and py27]
-    - vc14  # [win and (py35 or py36)]
+  run_exports:
+    # so name changes in bugfix revisions.  Pin to bugfix revision.
+    #    https://abi-laboratory.pro/tracker/timeline/proj/
+    - {{ pin_subpackage('proj4', max_pin='x.x.x') }}
 
 requirements:
   build:
-    - python  # [win]
     - cmake  # [win]
     - unzip  # [not win]
-    - curl  >=7.44.0,<8
-    - vc 9  # [win and py27]
-    - vc 14  # [win and (py35 or py36)]
-  run:
-    - vc 9  # [win and py27]
-    - vc 14  # [win and (py35 or py36)]
+    - curl
+    - {{ compiler('c') }}
 
 test:
   commands:
@@ -48,3 +43,4 @@ extra:
   recipe-maintainers:
     - ocefpaf
     - pelson
+    - msarahan
