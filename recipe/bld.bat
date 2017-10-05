@@ -1,9 +1,3 @@
-cd %SRC_DIR%\nad
-curl -fsS -o proj-datumgrid-1.7.zip http://download.osgeo.org/proj/proj-datumgrid-1.7.zip
-7z x proj-datumgrid-1.7.zip
-del proj-datumgrid-1.7.zip
-cd ..
-
 nmake /f makefile.vc
 
 nmake INSTDIR=%LIBRARY_PREFIX% /f makefile.vc install-all

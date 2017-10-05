@@ -1,14 +1,6 @@
 #!/bin/bash
 
-pushd $SRC_DIR/nad
-# FIXME: check the sha256 manually 054e7b63b474926c79f25fbe5cd8760351e8d93e5a167b5473e993c01bb08866
-curl -L -O http://download.osgeo.org/proj/proj-datumgrid-1.7.zip
-unzip -o proj-datumgrid-1.7.zip
-rm -rf proj-datumgrid-1.7.zip
-popd
-
-
-./configure --prefix=$PREFIX --without-jni
+./configure --prefix=$PREFIX --without-jni --host=$HOST
 
 export CFLAGS="-O2 -Wl,-S $CFLAGS"
 
