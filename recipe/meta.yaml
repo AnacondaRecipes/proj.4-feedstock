@@ -5,12 +5,14 @@ package:
   version: {{ version }}
 
 source:
-  fn:  proj-{{ version }}.tar.gz
-  url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz
-  sha256: 6984542fea333488de5c82eea58d699e4aff4b359200a9971537cd7e047185f7
+  - url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz
+    sha256: 6984542fea333488de5c82eea58d699e4aff4b359200a9971537cd7e047185f7
+  - url: http://download.osgeo.org/proj/proj-datumgrid-1.6.zip
+    sha256: 054e7b63b474926c79f25fbe5cd8760351e8d93e5a167b5473e993c01bb08866
+    folder: nad
 
 build:
-  number: 5
+  number: 6
   features:
     - vc{{ vc }}  # [win]
   run_exports:
@@ -21,8 +23,6 @@ build:
 requirements:
   build:
     - cmake  # [win]
-    - unzip  # [not win]
-    - curl
     - {{ compiler('c') }}
 
 test:
