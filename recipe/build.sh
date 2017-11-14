@@ -3,7 +3,10 @@
 ./configure --prefix=$PREFIX --without-jni --host=$HOST
 
 make
-make check
+# skip tests on linux32 due to rounding error causing issues
+if [ $(getconf LONG_BIT) -ge 64 ]; then
+    make check
+fi
 make install
 
 ACTIVATE_DIR=$PREFIX/etc/conda/activate.d

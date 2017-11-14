@@ -12,9 +12,7 @@ source:
     folder: nad
 
 build:
-  number: 6
-  features:
-    - vc{{ vc }}  # [win]
+  number: 7
   run_exports:
     # so name changes in bugfix revisions.  Pin to bugfix revision.
     #    https://abi-laboratory.pro/tracker/timeline/proj/
