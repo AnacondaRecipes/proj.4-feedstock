@@ -20,7 +20,6 @@ build:
 
 requirements:
   build:
-    - cmake  # [win]
     - make  # [unix]
     - {{ compiler('c') }}
 
