@@ -1,18 +1,25 @@
 #!/bin/bash
 
-./configure --prefix=${PREFIX} --without-jni --host=${HOST}
+# Get an updated config.sub and config.guess
+cp $BUILD_PREFIX/share/gnuconfig/config.* .
 
 export CFLAGS="-O2 -Wl,-S ${CFLAGS}"
+export CXXFLAGS="-O2 -Wl,-S ${CXXFLAGS}"
+
+if [ ! -f configure ]; then
+    ./autogen.sh
+fi
+
+./configure --prefix=${PREFIX} --host=${HOST} --disable-static
 
 make -j${CPU_COUNT}
 # skip tests on linux32 due to rounding error causing issues
 if [[ ! ${HOST} =~ .*linux.* ]] || [[ ! ${ARCH} == 32 ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
     make check -j${CPU_COUNT}
 fi
+fi
 make install -j${CPU_COUNT}
-
-# Copy datum data.
-cp -r data/* ${PREFIX}/share/proj
 
 ACTIVATE_DIR=${PREFIX}/etc/conda/activate.d
 DEACTIVATE_DIR=${PREFIX}/etc/conda/deactivate.d

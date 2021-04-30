@@ -1,20 +1,18 @@
-{% set version = "6.2.1" %}
-{% set datumgrid_ver = "1.8" %}
+{% set version = "8.0.0" %}
 
 package:
   name: proj
   version: {{ version }}
 
 source:
-  - url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz
-    sha256: 7f2e0fe63312f1e766057cceb53dc9585c4a335ff6641de45696dbd40d17c340
-  - url: http://download.osgeo.org/proj/proj-datumgrid-{{ datumgrid_ver }}.tar.gz
-    sha256: 3ff6618a0acc9f0b9b4f6a62e7ff0f7bf538fb4f74de47ad04da1317408fcc15
-    folder: data
+  url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz
+  sha256: aa5d4b934450149a350aed7e5fbac880e2f7d3fa2f251c26cb64228f96a2109e
 
 build:
   number: 0
-  skip: True  # [win and vc<14]
+  # The simplest way to install PROJ on Windows is to use the OSGeo4W software distribution
+  # Skip win 32 because test commands failed and don't run properly
+  skip: True  # [win32]
   run_exports:
     # so name changes in bugfix revisions.  Pin to bugfix revision.
     #    https://abi-laboratory.pro/tracker/timeline/proj/
@@ -27,18 +25,25 @@ requirements:
     - make  # [not win]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - automake  # [not win]
+    - libtool  # [not win]
+    - gnuconfig  # [not win]
+    - sqlite     # [build_platform != target_platform]
   host:
     - sqlite
+    - libtiff
+    - libcurl
   run:
     - sqlite
+    - libtiff
+    - libcurl
   run_constrained:
     - proj4 ==999999999999
 
 test:
   commands:
-    # Check if NAD27/NAD83 datum shifting is present if `conus` is present.
-    - test -f $PREFIX/share/proj/conus  # [not win]
-    - if not exist %LIBRARY_PREFIX%\\share\\proj\\conus exit 1  # [win]
+    - test -f ${PREFIX}/lib/libproj${SHLIB_EXT}  # [unix]
+    - test ! -f ${PREFIX}/lib/libproj.a          # [unix]
     - if not exist %LIBRARY_LIB%\\proj.lib exit 1  # [win]
     - echo -105 40 | proj +proj=utm +zone=13 +ellps=WGS84
     - echo -117 30 | cs2cs +proj=latlong +datum=NAD27 +to +proj=latlong +datum=NAD83
@@ -48,12 +53,14 @@ about:
   home: https://proj.org/
   license: MIT
   license_file: COPYING
-  summary: 'Cartographic Projections and Coordinate Transformations Library'
+  summary: Cartographic Projections and Coordinate Transformations Library
 
 extra:
   recipe-maintainers:
+    - hobu
+    - msarahan
+    - mwtoews
     - ocefpaf
     - pelson
-    - msarahan
-    - xylar
     - snowman2
+    - xylar
