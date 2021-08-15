@@ -25,6 +25,7 @@ requirements:
     - cmake  # [win]
     - pkg-config  # [not win]
     - make  # [not win]
+    - libtool  # [not win]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
