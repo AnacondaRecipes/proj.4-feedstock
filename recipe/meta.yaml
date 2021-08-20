@@ -23,7 +23,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-
+    - libtool  # [unix]
 test:
   commands:
     # Check if NAD27/NAD83 datum shifting is present if `conus` is present.
