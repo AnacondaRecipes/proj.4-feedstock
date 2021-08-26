@@ -1,4 +1,4 @@
-{% set version = "8.0.1" %}
+{% set version = "7.2.0" %}
 
 package:
   name: proj
@@ -6,12 +6,12 @@ package:
 
 source:
   url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz
-  sha256: e0463a8068898785ca75dd49a261d3d28b07d0a88f3b657e8e0089e16a0375fa
+  sha256: 2957798e5fe295ff96a2af1889d0428e486363d210889422f76dd744f7885763
   patches:
     - sqlite_check.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # so name changes in bugfix revisions.  Pin to bugfix revision.
     #    https://abi-laboratory.pro/tracker/timeline/proj/
@@ -21,6 +21,7 @@ requirements:
   build:
     - cmake
     - make  # [not win]
+    - libtool  # [not win]
     - m2-patch  # [win]
     - patch     # [not win]
     - {{ compiler('c') }}
