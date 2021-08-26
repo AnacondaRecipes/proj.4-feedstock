@@ -1,21 +1,35 @@
 #!/bin/bash
 
-# Get an updated config.sub and config.guess
-cp -r ${BUILD_PREFIX}/share/libtool/build-aux/config.* .
+mkdir -p build && cd build
 
-./configure --prefix=${PREFIX} --without-jni --host=${HOST}
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
+    EXE_SQLITE3=${PREFIX}/bin/sqlite3
+else
+    EXE_SQLITE3=${BUILD_PREFIX}/bin/sqlite3
+fi
 
-export CFLAGS="-O2 -Wl,-S ${CFLAGS}"
+cmake ${CMAKE_ARGS} \
+      -D CMAKE_BUILD_TYPE=Release \
+      -D BUILD_SHARED_LIBS=ON \
+      -D CMAKE_INSTALL_PREFIX=${PREFIX} \
+      -D CMAKE_INSTALL_LIBDIR=lib \
+      -D EXE_SQLITE3=${EXE_SQLITE3} \
+      ${SRC_DIR}
 
-make -j${CPU_COUNT}
+make -j${CPU_COUNT} ${VERBOSE_CM}
+
 # skip tests on linux32 due to rounding error causing issues
 if [[ ! ${HOST} =~ .*linux.* ]] || [[ ! ${ARCH} == 32 ]]; then
-    make check -j${CPU_COUNT}
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
+if [[ "${target_platform}" != osx-* ]]; then
+    ctest --output-on-failure
+else
+    ctest --output-on-failure || true
 fi
-make install -j${CPU_COUNT}
+fi
+fi
 
-# Copy datum data.
-cp -r data/* ${PREFIX}/share/proj
+make install -j${CPU_COUNT}
 
 ACTIVATE_DIR=${PREFIX}/etc/conda/activate.d
 DEACTIVATE_DIR=${PREFIX}/etc/conda/deactivate.d
