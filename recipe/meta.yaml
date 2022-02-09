@@ -1,4 +1,4 @@
-{% set version = "8.0.1" %}
+{% set version = "8.2.1" %}
 
 package:
   name: proj
@@ -6,8 +6,9 @@ package:
 
 source:
   url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz
-  sha256: e0463a8068898785ca75dd49a261d3d28b07d0a88f3b657e8e0089e16a0375fa
+  sha256: 76ed3d0c3a348a6693dfae535e5658bbfd47f71cb7ff7eb96d9f12f7e068b1cf
   patches:
+    # Remove SQLite vesrion check from CMakeLists.txt. The version is pined below.
     - sqlite_check.patch
 
 build:
@@ -26,11 +27,11 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - sqlite
+    - sqlite >=3.11
     - libtiff
     - libcurl
   run:
-    - sqlite
+    - sqlite >=3.11
     - libtiff
     - libcurl
   run_constrained:
@@ -48,8 +49,12 @@ test:
 about:
   home: https://proj.org/
   license: MIT
+  license_family: MIT
   license_file: COPYING
   summary: Cartographic Projections and Coordinate Transformations Library
+  dev_url: https://github.com/OSGeo/PROJ
+  doc_url: https://proj.org/index.html
+  doc_src_url: https://github.com/OSGeo/PROJ/tree/master/docs
 
 extra:
   recipe-maintainers:
