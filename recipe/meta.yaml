@@ -30,6 +30,7 @@ requirements:
     - libtiff {{ libtiff }}
     - libcurl 7.88.1
     - nlohmann_json 3.11.2
+    - gtest 1.14.0
   run:
     # bounds through run_exports
     - sqlite
