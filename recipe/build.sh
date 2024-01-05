@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $SRC_DIR
+
 mkdir -p build && cd build
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
@@ -14,6 +16,7 @@ cmake ${CMAKE_ARGS} \
       -D CMAKE_INSTALL_PREFIX=${PREFIX} \
       -D CMAKE_INSTALL_LIBDIR=lib \
       -D EXE_SQLITE3=${EXE_SQLITE3} \
+      -D NLOHMANN_JSON_ORIGIN="external" \
       ${SRC_DIR}
 
 make -j${CPU_COUNT} ${VERBOSE_CM}

@@ -23,10 +23,3 @@ else
 endif
 
 setenv PROJ_NETWORK "ON"
-
-if ( -f "${CONDA_PREFIX}/share/proj/copyright_and_licenses.csv" ) then
-  # proj-data is installed because its license was copied over
-  setenv PROJ_NETWORK "OFF"
-else
-  setenv PROJ_NETWORK "ON"
-endif
