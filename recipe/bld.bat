@@ -19,7 +19,6 @@ cd ..
 
 set ACTIVATE_DIR=%PREFIX%\etc\conda\activate.d
 set DEACTIVATE_DIR=%PREFIX%\etc\conda\deactivate.d
-mkdir %ACTIVATE_DIR%
 if not exist %ACTIVATE_DIR% mkdir %ACTIVATE_DIR%
 if errorlevel 1 exit 1
 if not exist %DEACTIVATE_DIR% mkdir %DEACTIVATE_DIR%
