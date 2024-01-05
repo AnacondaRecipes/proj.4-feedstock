@@ -20,12 +20,8 @@ make -j${CPU_COUNT} ${VERBOSE_CM}
 
 # skip tests on linux32 due to rounding error causing issues
 if [[ ! ${HOST} =~ .*linux.* ]] || [[ ! ${ARCH} == 32 ]]; then
-if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
-if [[ "${target_platform}" != osx-* ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
     ctest --output-on-failure
-else
-    ctest --output-on-failure || true
-fi
 fi
 fi
 
