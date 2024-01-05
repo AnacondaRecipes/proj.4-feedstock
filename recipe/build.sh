@@ -17,6 +17,7 @@ cmake ${CMAKE_ARGS} \
       -D CMAKE_INSTALL_LIBDIR=lib \
       -D EXE_SQLITE3=${EXE_SQLITE3} \
       -D NLOHMANN_JSON_ORIGIN="external" \
+      -D USE_EXTERNAL_GTEST=OFF \
       ${SRC_DIR}
 
 make -j${CPU_COUNT} ${VERBOSE_CM}
