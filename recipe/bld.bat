@@ -9,7 +9,6 @@ cmake -G "NMake Makefiles" ^
          -D CMAKE_CXX_FLAGS="/WX" ^
          -D CMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
          -D NLOHMANN_JSON_ORIGIN="external" ^
-         -D USE_EXTERNAL_GTEST=ON ^
          %SRC_DIR%
 if errorlevel 1 exit 1
 

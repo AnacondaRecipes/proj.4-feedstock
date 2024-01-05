@@ -16,6 +16,8 @@ build:
     # so name changes in bugfix revisions.  Pin to bugfix revision.
     #    https://abi-laboratory.pro/tracker/timeline/proj/
     - {{ pin_subpackage('proj', max_pin='x.x.x') }}
+  ignore_run_exports:
+    - gtest
 
 requirements:
   build:
@@ -30,7 +32,7 @@ requirements:
     - libtiff {{ libtiff }}
     - libcurl 7.88.1
     - nlohmann_json 3.11.2
-    - gtest 1.14.0
+    - gtest 1.14.0 # [unix]
   run:
     # bounds through run_exports
     - sqlite
