@@ -6,7 +6,7 @@ cmake -G "NMake Makefiles" ^
          -D CMAKE_C_FLAGS="/WX" ^
          -D CMAKE_CXX_FLAGS="/WX" ^
          -D CMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
-         -D NLOHMANN_JSON_ORIGIN=external ^
+         -D NLOHMANN_JSON_ORIGIN="external" ^
          %SRC_DIR%
 if errorlevel 1 exit 1
 
@@ -14,9 +14,6 @@ cmake --build . --config Release --target install
 if errorlevel 1 exit 1
 
 cd ..
-
-del /F /Q %LIBRARY_PREFIX%\\share\\proj\\*.cmake
-if errorlevel 1 exit 1
 
 set ACTIVATE_DIR=%PREFIX%\etc\conda\activate.d
 set DEACTIVATE_DIR=%PREFIX%\etc\conda\deactivate.d
