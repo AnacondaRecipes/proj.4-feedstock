@@ -1,15 +1,14 @@
-{% set version = "8.2.1" %}
+{% set version = "9.3.1" %}
 
 package:
   name: proj
   version: {{ version }}
 
 source:
-  url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz
-  sha256: 76ed3d0c3a348a6693dfae535e5658bbfd47f71cb7ff7eb96d9f12f7e068b1cf
+  url: https://download.osgeo.org/proj/proj-{{ version }}.tar.gz
+  sha256: b0f919cb9e1f42f803a3e616c2b63a78e4d81ecfaed80978d570d3a5e29d10bc
   patches:
-    # Remove SQLite vesrion check from CMakeLists.txt. The version is pined below.
-    - sqlite_check.patch
+    - define_OLD_BUGGY_REMQUO.patch
 
 build:
   number: 0
@@ -17,6 +16,8 @@ build:
     # so name changes in bugfix revisions.  Pin to bugfix revision.
     #    https://abi-laboratory.pro/tracker/timeline/proj/
     - {{ pin_subpackage('proj', max_pin='x.x.x') }}
+  ignore_run_exports:
+    - gtest
 
 requirements:
   build:
@@ -27,11 +28,14 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - sqlite >=3.11
-    - libtiff
-    - libcurl
+    - sqlite {{ sqlite }}
+    - libtiff {{ libtiff }}
+    - libcurl 7.88.1
+    - nlohmann_json 3.11.2
+    - gtest 1.14.0 # [unix]
   run:
-    - sqlite >=3.11
+    # bounds through run_exports
+    - sqlite
     - libtiff
     - libcurl
   run_constrained:
@@ -42,6 +46,10 @@ test:
     - test -f ${PREFIX}/lib/libproj${SHLIB_EXT}  # [unix]
     - test ! -f ${PREFIX}/lib/libproj.a          # [unix]
     - if not exist %LIBRARY_LIB%\\proj.lib exit 1  # [win]
+    # should be the first CLI test to ensure cs2cs results don't change
+    # See https://github.com/conda-forge/proj.4-feedstock/pull/139
+    - >-
+      [[ $(echo 569704.57 4269024.67 | cs2cs EPSG:26915 +to EPSG:26715) == $(echo 569704.57 4269024.67 | cs2cs EPSG:26915 +to EPSG:26715) ]]  # [unix]
     - echo -105 40 | proj +proj=utm +zone=13 +ellps=WGS84
     - echo -117 30 | cs2cs +proj=latlong +datum=NAD27 +to +proj=latlong +datum=NAD83
     - echo -105 40 | cs2cs +init=epsg:4326 +to +init=epsg:2975
@@ -52,9 +60,12 @@ about:
   license_family: MIT
   license_file: COPYING
   summary: Cartographic Projections and Coordinate Transformations Library
+  description: |
+    PROJ is a generic coordinate transformation software that transforms geospatial 
+    coordinates from one coordinate reference system (CRS) to another. 
+    This includes cartographic projections as well as geodetic transformations.
   dev_url: https://github.com/OSGeo/PROJ
   doc_url: https://proj.org/index.html
-  doc_src_url: https://github.com/OSGeo/PROJ/tree/master/docs
 
 extra:
   recipe-maintainers:
