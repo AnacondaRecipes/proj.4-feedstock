@@ -1,17 +1,18 @@
-{% set version = "9.3.1" %}
+{% set name = "proj" %}
+{% set version = "9.7.1" %}
 
 package:
-  name: proj
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://download.osgeo.org/proj/proj-{{ version }}.tar.gz
-  sha256: b0f919cb9e1f42f803a3e616c2b63a78e4d81ecfaed80978d570d3a5e29d10bc
+  url: https://download.osgeo.org/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 6c097dc803c561929cdfcc46e4bf9945ea977611fb31493ad14e88edaeae260f
   patches:
     - define_OLD_BUGGY_REMQUO.patch
 
 build:
-  number: 1
+  number: 0
   run_exports:
     # so name changes in bugfix revisions.  Pin to bugfix revision.
     #    https://abi-laboratory.pro/tracker/timeline/proj/
@@ -21,12 +22,11 @@ build:
 
 requirements:
   build:
-    - cmake
-    - make  # [not win]
-    - m2-patch  # [win]
-    - patch     # [not win]
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - cmake
+    - make  # [not win]
   host:
     - sqlite {{ sqlite }}
     - libtiff {{ libtiff }}
@@ -55,7 +55,7 @@ test:
     - echo -105 40 | cs2cs +init=epsg:4326 +to +init=epsg:2975
 
 about:
-  home: https://proj.org/
+  home: https://proj.org
   license: MIT
   license_family: MIT
   license_file: COPYING
