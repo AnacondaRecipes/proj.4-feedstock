@@ -1,5 +1,5 @@
 {% set name = "proj" %}
-{% set version = "9.7.1" %}
+{% set version = "9.8.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://download.osgeo.org/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 6c097dc803c561929cdfcc46e4bf9945ea977611fb31493ad14e88edaeae260f
+  sha256: af5b731c145c1d13c4e3b4eeb7d167e94e845e440f71e3496b4ed8dae0291960
   patches:
     - define_OLD_BUGGY_REMQUO.patch
 
@@ -32,7 +32,7 @@ requirements:
     - libtiff {{ libtiff }}
     - libcurl {{ libcurl }}
     - nlohmann_json 3.11.2
-    - gtest 1.14.0 # [unix]
+    - gtest 1.14.0  # [unix]
   run:
     # bounds through run_exports
     - sqlite
@@ -44,7 +44,7 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libproj${SHLIB_EXT}  # [unix]
-    - test ! -f ${PREFIX}/lib/libproj.a          # [unix]
+    - test ! -f ${PREFIX}/lib/libproj.a  # [unix]
     - if not exist %LIBRARY_LIB%\\proj.lib exit 1  # [win]
     # should be the first CLI test to ensure cs2cs results don't change
     # See https://github.com/conda-forge/proj.4-feedstock/pull/139
@@ -61,8 +61,8 @@ about:
   license_file: COPYING
   summary: Cartographic Projections and Coordinate Transformations Library
   description: |
-    PROJ is a generic coordinate transformation software that transforms geospatial 
-    coordinates from one coordinate reference system (CRS) to another. 
+    PROJ is a generic coordinate transformation software that transforms geospatial
+    coordinates from one coordinate reference system (CRS) to another.
     This includes cartographic projections as well as geodetic transformations.
   dev_url: https://github.com/OSGeo/PROJ
   doc_url: https://proj.org/index.html
