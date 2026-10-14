@@ -12,7 +12,7 @@ source:
     - define_OLD_BUGGY_REMQUO.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # so name changes in bugfix revisions.  Pin to bugfix revision.
     #    https://abi-laboratory.pro/tracker/timeline/proj/
@@ -31,7 +31,7 @@ requirements:
     - sqlite {{ sqlite }}
     - libtiff {{ libtiff }}
     - libcurl {{ libcurl }}
-    - nlohmann_json 3.11.2
+    - nlohmann_json 3
     - gtest 1.14.0  # [unix]
   run:
     # bounds through run_exports
